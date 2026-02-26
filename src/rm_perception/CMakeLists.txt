@@ -87,6 +87,21 @@ ament_target_dependencies(neural_network_node rclcpp sensor_msgs geometry_msgs s
 # 这里非常关键：我们要链接 yolo_detector 库、onnxruntime 引擎、以及自定义消息支持库
 target_link_libraries(neural_network_node yolo_detector onnxruntime "${cpp_typesupport_target}")
 
+#卡尔曼滤波预测节点
+add_executable(predictor_node 
+  src/Predictor_Node.cpp
+  src/kalman_predictor.cpp
+)
+# 1. 外部依赖里去掉那个不存在的 rm_perception_msgs
+ament_target_dependencies(predictor_node rclcpp sensor_msgs cv_bridge OpenCV)
+
+# 2. 获取 Jazzy 版本推荐的内部消息 Target
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+
+# 3. 将消息目标链接到需要解包 Armors 的节点上
+target_link_libraries(predictor_node "${cpp_typesupport_target}")
+target_link_libraries(traditional_vision_node "${cpp_typesupport_target}")
+target_link_libraries(neural_network_node "${cpp_typesupport_target}")
 
 # ==========================================
 # 7. 安装规则
@@ -100,6 +115,7 @@ install(TARGETS
   visualizer_node
   traditional_vision_node
   neural_network_node
+  predictor_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
@@ -107,5 +123,11 @@ install(TARGETS
 
 install(DIRECTORY include/ DESTINATION include)
 install(DIRECTORY models DESTINATION share/${PROJECT_NAME})
+
+# 安装 launch 文件夹
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}
+)
 
 ament_package()

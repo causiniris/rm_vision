@@ -19,9 +19,9 @@ public:
         sub_raw_ = this->create_subscription<sensor_msgs::msg::Image>(
             "/camera/image_raw", qos, std::bind(&VisualizerNode::rawCallback, this, _1));
         sub_trad_ = this->create_subscription<sensor_msgs::msg::Image>(
-            "/traditional_vision/image_result", qos, std::bind(&VisualizerNode::tradCallback, this, _1));
+            "/predictor/traditional_image", qos, std::bind(&VisualizerNode::tradCallback, this, _1));
         sub_nn_ = this->create_subscription<sensor_msgs::msg::Image>(
-            "/neural_network/image_result", qos, std::bind(&VisualizerNode::nnCallback, this, _1));
+            "/predictor/neural_image", qos, std::bind(&VisualizerNode::nnCallback, this, _1));
 
         // 依然保留一个高频定时器，仅仅是为了让 OpenCV 的窗口不卡死
         ui_timer_ = this->create_wall_timer(
