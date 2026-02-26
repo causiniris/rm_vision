@@ -73,4 +73,9 @@ cv::Rect KalmanPredictor::update(const cv::Rect& measurement, bool has_measureme
                     state.at<float>(2), state.at<float>(3));
 }
 
+void KalmanPredictor::setNoiseParams(float q_cov, float r_cov) {
+    cv::setIdentity(kf_.processNoiseCov, cv::Scalar::all(q_cov));
+    cv::setIdentity(kf_.measurementNoiseCov, cv::Scalar::all(r_cov));
+}
+
 } // namespace rm_perception
