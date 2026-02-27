@@ -13,7 +13,7 @@ class NeuralNetworkNode : public rclcpp::Node {
 public:
     NeuralNetworkNode() : Node("neural_network_node") {
         // 请确保模型路径正确
-        std::string model_path = "/home/causin/rm_vision/src/rm_perception/models/best.onnx"; 
+        std::string model_path = "src/rm_perception/models/best.onnx"; 
         
         try {
             detector_ = std::make_unique<YoloDetector>(model_path);

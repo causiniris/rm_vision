@@ -11,7 +11,7 @@ public:
         pub_ = this->create_publisher<sensor_msgs::msg::Image>("/camera/image_raw", qos);
         
         // 确保路径是你真实的 23 秒视频路径
-        video_path_ = "/home/causin/rm_vision/videos/demo.mp4"; 
+        video_path_ = "videos/demo.mp4"; 
         cap_.open(video_path_);
         
         if (!cap_.isOpened()) {
