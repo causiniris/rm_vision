@@ -38,7 +38,7 @@
 colcon build --packages-select rm_perception
 ```
 
-###3. 一键启动系统
+### 3. 一键启动系统
 项目已配备 vision_bringup.launch.py 一键启动脚本。该脚本会自动按正确时序拉起 5 个节点，并强制图像源节点延迟 3 秒启动，以确保 1000 深度容量的 QoS 队列完美建立。
 ```bash
 # 刷新环境变量
