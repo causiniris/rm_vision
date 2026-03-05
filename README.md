@@ -48,3 +48,22 @@ source install/setup.bash
 ros2 launch rm_perception vision_bringup.launch.py
 ```
 运行结束后，可在工作空间根目录下查看渲染生成的 perception_demo_perfect.avi 三联屏实况录像。
+
+## 🧰 离线辅助工具：双模型实时相机标定 (Live Calibrator)
+
+为了在 3D PnP 姿态解算中获取极高精度的物理测距，本项目内置了轻量级的纯 C++ 实时交互式相机标定工具。
+
+**核心特性：**
+* **底层数学解耦**：启动时支持动态选择 **标准针孔模型 (Pinhole)** 或 **鱼眼广角模型 (Fisheye)**，完美适配从普通工业相机到 150° 超广角镜头的各类硬件。
+* **实时交互反馈**：利用 OpenCV 的 `CALIB_CB_FAST_CHECK` 机制，实时渲染角点连线，告别盲拍盲录，支持按 `S` 键精准抓拍，按 `C` 键一键计算。
+* **工程化输出**：标定完成后，内参矩阵、畸变系数以及 `model_type` 模型标签会自动规范化输出至 `src/rm_perception/config/camera_params.yaml`，供核心 PnP 节点直接读取。
+
+**编译与使用指南（独立编译，无需 ROS 2 守护）：**
+在工作空间根目录下执行以下命令极速编译并运行：
+```bash
+# 1. 独立编译离线标定工具
+g++ src/rm_perception/tools/camera_calibration/live_calibrator.cpp -o live_calibrator `pkg-config --cflags --libs opencv4`
+
+# 2. 运行工具（需准备 9x6 规格的物理黑白棋盘格）
+./live_calibrator
+```
