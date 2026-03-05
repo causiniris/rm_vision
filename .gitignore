@@ -16,3 +16,6 @@ log/
 
 #忽略生成的视频
 *.avi
+
+# 这行命令会把 "live_calibrator" 这个名字追加到 .gitignore 文件中
+echo "live_calibrator" >> .gitignore
